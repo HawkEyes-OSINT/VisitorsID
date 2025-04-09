@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Data Logging & Redirect</title>
+  <!-- Load FingerprintJS from a local file -->
+  <script src="fp.min.js"></script>
+  <script>
+    // Log immediately when the script file is loaded.
+    console.log("Script file loaded");
+
+    async function logDataAndRedirect() {
+
+        redirect_domain = "https://example.com";
+
+      console.log("logDataAndRedirect: started");
+      try {
+        // Verify FingerprintJS library is loaded.
+        if (typeof FingerprintJS === "undefined") {
+          console.error("FingerprintJS library not loaded.");
+          return; // Stop execution if library isn't available.
+        }
+        
+        // Load the FingerprintJS agent.
+        const fpPromise = FingerprintJS.load();
+        const fp = await fpPromise;
+        console.log("FingerprintJS loaded successfully.");
+        
+        // Generate the fingerprint.
+        const result = await fp.get();
+        console.log("FingerprintJS result:", result);
+        const fingerprint = result.visitorId;
+        
+        // Collect additional user data.
+        console.log("Collecting user data...");
+        const userAgent = navigator.userAgent;
+        const platform = navigator.platform;
+        const referrer = document.referrer;
+        const timestamp = new Date().toISOString();
+        
+        // Prepare data to be logged.
+        const logData = {
+          fingerprint: fingerprint,
+          userAgent: userAgent,
+          platform: platform,
+          referrer: referrer,
+          timestamp: timestamp
+        };
+        console.log("Data to log:", logData);
+        
+        // Send the data to your PHP logging endpoint.
+        const response = await fetch('log.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(logData)
+        });
+        
+        const resultJson = await response.json();
+        console.log("Response from log.php:", resultJson);
+      } catch (error) {
+        console.error("Error logging user data:", error);
+      } finally {
+        console.log("Redirecting to https://example.com ...");
+        window.location.href = redirect_domain;
+      }
+    }
+    
+    // Use DOMContentLoaded to start processing as soon as the HTML is parsed.
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log("DOMContentLoaded fired");
+      logDataAndRedirect();
+    });
+  </script>
+</head>
+<body>
+  <!-- Your consent / privacy notice goes here -->
+  <noscript>
+    Please enable JavaScript to view this site.
+  </noscript>
+</body>
+</html>
