@@ -34,7 +34,7 @@ redirect_domain = "https://yourmainwebsite.com";
 
 Save the file after making this change.
 
-![Editing the redirect domain](edit_redirect_domain.png)
+![Editing the redirect domain](readme_images/edit_redirect_domain.png)
 
 ### Step 3: Upload to Your Web Hosting
 
@@ -43,7 +43,7 @@ Save the file after making this change.
 3. Go to the directory where you want to install VisitorsID (usually public_html or www)
 4. Upload all the files from the extracted ZIP folder
 
-![Uploading files to web hosting](upload_files.png)
+![Uploading files to web hosting](readme_images/upload_files.png)
 
 ### Step 4: Set Permissions (Optional)
 
@@ -61,7 +61,7 @@ To see who has visited your site:
 3. Find and open the `logs.txt` file
 4. Each line in this file represents one visitor
 
-![Viewing visitor logs](view_logs.png)
+![Viewing visitor logs](readme_images/view_logs.png)
 
 ## Understanding the Log Data
 
